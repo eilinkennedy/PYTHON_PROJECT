@@ -1,4 +1,4 @@
-“ Which SuperHero are you?” predictor using logistic regression, where 
+# “ Which SuperHero are you?” predictor using logistic regression, where 
 we input traits and the model predicts their superhero match.
 
 import numpy as np
