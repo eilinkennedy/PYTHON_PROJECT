@@ -1,5 +1,6 @@
 “ Which SuperHero are you?” predictor using logistic regression, where 
-students input traits and the model predicts their superhero match.
+we input traits and the model predicts their superhero match.
+
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
