@@ -1,0 +1,73 @@
+“ Which SuperHero are you?” predictor using logistic regression, where 
+students input traits and the model predicts their superhero match.
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+# Define the superhero data
+data = {
+ 'Superhero': ['Superman', 'Batman', 'Spider-Man', 'Wonder Woman', 'Hulk', 
+'Iron Man'],
+ 'Strength': [9, 5, 7, 8, 10, 6],
+ 'Intelligence': [8, 9, 7, 8, 4, 10],
+ 'Agility': [7, 6, 8, 7, 5, 6],
+ 'Humor': [4, 3, 8, 3, 2, 7],
+ 'Bravery': [9, 8, 7, 9, 8, 8],
+ 'Class': [0, 1, 2, 3, 4, 5]
+}
+df = pd.DataFrame(data)
+# Features and target variable
+X = df[['Strength', 'Intelligence', 'Agility', 'Humor', 'Bravery']]
+y = df['Class']
+# Split the data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, 
+random_state=42)
+# Scale the features
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+# Train the model
+model = LogisticRegression()
+model.fit(X_train_scaled, y_train)
+# Evaluate the model
+y_pred = model.predict(X_test_scaled)
+print(f"Accuracy: {accuracy_score(y_test, y_pred)}")
+# Function to predict superhero based on traits
+def predict_superhero(traits):
+ if len(traits) != 5:
+ raise ValueError("Input should be a list of 5 traits: [Strength, Intelligence, 
+Agility, Humor, Bravery]")
+ 
+ # Create a DataFrame for the input traits with the same feature names
+ traits_df = pd.DataFrame([traits], columns=['Strength', 'Intelligence', 'Agility', 
+'Humor', 'Bravery'])
+ 
+ # Scale the input traits
+ traits_scaled = scaler.transform(traits_df)
+ 
+ # Predict the class
+ predicted_class = model.predict(traits_scaled)[0]
+ 
+ # Mapping class to superhero names
+ superhero_map = {
+ 0: 'Superman',
+ 1: 'Batman',
+ 2: 'Spider-Man',
+ 3: 'Wonder Woman',
+ 4: 'Hulk',
+ 5: 'Iron Man'
+ }
+ 
+ return superhero_map[predicted_class]
+# Get user input for superhero traits
+user_traits = []
+traits_names = ['Strength', 'Intelligence', 'Agility', 'Humor', 'Bravery']
+for trait in traits_names:
+ n = int(input(f"Enter your trait for {trait} (1-10): "))
+ user_traits.append(n)
+# Predict the superhero based on user traits
+predicted_hero = predict_superhero(user_traits)
+print(f"You are most like: {predicted_hero}")
+OUTPUT:
